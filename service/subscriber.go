@@ -1,11 +1,11 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
+	"bit.monitor.com/model/validation"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
-	"web.monitor.com/model/validation"
 )
 
 // AddSubscriber 保存预警订阅通知记录

@@ -1,11 +1,11 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
 )
 
 func AddAlarmSchedulerRelation(tx *gorm.DB, alarmId uint64, schedulerId uint64) error {

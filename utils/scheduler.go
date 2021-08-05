@@ -1,11 +1,11 @@
 package utils
 
 import (
+	"bit.monitor.com/global"
 	"errors"
 	"fmt"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
-	"web.monitor.com/global"
 )
 
 var scheduleTasks = make(map[uint64]*cron.Cron)

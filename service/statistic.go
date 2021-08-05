@@ -1,13 +1,13 @@
 package service
 
 import (
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/model/validation"
+	"bit.monitor.com/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"time"
-	"web.monitor.com/model/response"
-	"web.monitor.com/model/validation"
-	"web.monitor.com/utils"
 )
 
 func GetStatisticOverallByTimeRange(r validation.GetStatisticOverallByTimeRange) (err error, data interface{}) {

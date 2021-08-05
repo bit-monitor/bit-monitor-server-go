@@ -1,10 +1,10 @@
 package core
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/initialize"
 	"fmt"
 	"go.uber.org/zap"
-	"web.monitor.com/global"
-	"web.monitor.com/initialize"
 )
 
 func RunWindowsServer() {

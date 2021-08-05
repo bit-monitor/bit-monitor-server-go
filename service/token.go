@@ -1,13 +1,13 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model/response"
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model/response"
 )
 
 const (

@@ -1,4 +1,4 @@
-module web.monitor.com
+module bit.monitor.com
 
 go 1.16
 

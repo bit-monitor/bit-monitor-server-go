@@ -1,9 +1,9 @@
 package service
 
 import (
+	"bit.monitor.com/global"
 	"go.uber.org/zap"
 	"time"
-	"web.monitor.com/global"
 )
 
 func HHasKey(key string, field string) bool {

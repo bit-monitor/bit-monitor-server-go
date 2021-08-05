@@ -1,10 +1,10 @@
 package global
 
 import (
+	"bit.monitor.com/config"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"web.monitor.com/config"
 )
 
 var (

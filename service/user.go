@@ -1,17 +1,17 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/model/validation"
+	"bit.monitor.com/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"math"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
-	"web.monitor.com/model/response"
-	"web.monitor.com/model/validation"
-	"web.monitor.com/utils"
 )
 
 func AddUserRegisterRecord(r validation.AddUserRegisterRecord) (err error, entity model.UmsUserRegisterRecord) {

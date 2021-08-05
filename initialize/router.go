@@ -1,10 +1,10 @@
 package initialize
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/middleware"
+	"bit.monitor.com/router"
 	"github.com/gin-gonic/gin"
-	"web.monitor.com/global"
-	"web.monitor.com/middleware"
-	"web.monitor.com/router"
 )
 
 func Router() *gin.Engine {

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"web.monitor.com/core"
-	"web.monitor.com/global"
-	"web.monitor.com/initialize"
+	"bit.monitor.com/core"
+	"bit.monitor.com/global"
+	"bit.monitor.com/initialize"
 )
 
 func main() {

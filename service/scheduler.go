@@ -1,9 +1,9 @@
 package service
 
 import (
+	"bit.monitor.com/model"
 	"gorm.io/gorm"
 	"time"
-	"web.monitor.com/model"
 )
 
 const (

@@ -1,13 +1,13 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/model/validation"
 	"go.uber.org/zap"
 	"math"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
-	"web.monitor.com/model/response"
-	"web.monitor.com/model/validation"
 )
 
 func AddResourceLoadErrorLog(r validation.AddResourceLoadErrorLog) (err error, data interface{}) {

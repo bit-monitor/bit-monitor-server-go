@@ -1,6 +1,11 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
+	"bit.monitor.com/model/validation"
+	"bit.monitor.com/utils"
+	"bit.monitor.com/utils/dingtalk"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,11 +15,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
-	"web.monitor.com/model/validation"
-	"web.monitor.com/utils"
-	"web.monitor.com/utils/dingtalk"
 )
 
 func AddAlarm(r validation.AddAlarm, userId uint64) (err error, data interface{}) {

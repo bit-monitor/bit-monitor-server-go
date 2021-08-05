@@ -1,13 +1,13 @@
 package core
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/utils"
 	"flag"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"os"
-	"web.monitor.com/global"
-	"web.monitor.com/utils"
 )
 
 func Viper(path ...string) *viper.Viper {

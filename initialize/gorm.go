@@ -1,14 +1,14 @@
 package initialize
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/initialize/internal"
+	"bit.monitor.com/model"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"os"
-	"web.monitor.com/global"
-	"web.monitor.com/initialize/internal"
-	"web.monitor.com/model"
 )
 
 func Gorm() *gorm.DB {

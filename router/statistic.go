@@ -1,8 +1,8 @@
 package router
 
 import (
+	v1 "bit.monitor.com/api/v1"
 	"github.com/gin-gonic/gin"
-	v1 "web.monitor.com/api/v1"
 )
 
 // InitStatisticRouterPrivate 私有路由，需要权限校验

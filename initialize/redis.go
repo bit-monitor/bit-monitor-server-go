@@ -1,11 +1,11 @@
 package initialize
 
 import (
+	"bit.monitor.com/global"
 	"context"
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 	"os"
-	"web.monitor.com/global"
 )
 
 var ctx = context.Background()

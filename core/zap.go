@@ -1,13 +1,13 @@
 package core
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/utils"
 	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/utils"
 )
 
 var level zapcore.Level

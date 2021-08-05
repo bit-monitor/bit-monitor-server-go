@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/service"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"web.monitor.com/model/response"
-	"web.monitor.com/service"
 )
 
 func TokenAuth() gin.HandlerFunc {

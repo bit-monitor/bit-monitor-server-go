@@ -1,9 +1,9 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
 )
 
 // AddSubscriberNotifyRecord 新增

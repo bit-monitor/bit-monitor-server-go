@@ -1,16 +1,16 @@
 package service
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/model/validation"
 	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"math"
 	"strconv"
 	"time"
-	"web.monitor.com/global"
-	"web.monitor.com/model"
-	"web.monitor.com/model/response"
-	"web.monitor.com/model/validation"
 )
 
 func AddProject(r validation.AddProject) (err error, data interface{}) {

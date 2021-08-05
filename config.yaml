@@ -9,7 +9,7 @@ system:
 zap:
   level: 'info'
   format: 'console'
-  prefix: '[WEB_MONITOR]'
+  prefix: '[BIT_MONITOR]'
   directory: 'log'
   link-name: 'latest_log'
   show-line: true
@@ -21,7 +21,7 @@ zap:
 mysql:
   path: "localhost:3306"
   config: "parseTime=true"
-  db-name: "web_monitor_test"
+  db-name: "bit_monitor_test"
   username: "root"
   password: "root"
   max-idle-conns: 10

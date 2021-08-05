@@ -1,8 +1,8 @@
 package router
 
 import (
+	"bit.monitor.com/api/v1"
 	"github.com/gin-gonic/gin"
-	"web.monitor.com/api/v1"
 )
 
 // InitUserRouterPublic 公开路由，不需要权限校验

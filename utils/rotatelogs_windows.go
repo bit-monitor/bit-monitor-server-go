@@ -1,12 +1,12 @@
 package utils
 
 import (
+	"bit.monitor.com/global"
 	zaprotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap/zapcore"
 	"os"
 	"path"
 	"time"
-	"web.monitor.com/global"
 )
 
 func GetWriteSyncer() (zapcore.WriteSyncer, error) {

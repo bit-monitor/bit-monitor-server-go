@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"bit.monitor.com/global"
 	"context"
 	"fmt"
 	"go.uber.org/zap"
@@ -9,7 +10,6 @@ import (
 	"log"
 	"os"
 	"time"
-	"web.monitor.com/global"
 )
 
 // writer log writer interface

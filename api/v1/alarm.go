@@ -1,13 +1,13 @@
 package v1
 
 import (
+	"bit.monitor.com/global"
+	"bit.monitor.com/model/response"
+	"bit.monitor.com/model/validation"
+	"bit.monitor.com/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
-	"web.monitor.com/global"
-	"web.monitor.com/model/response"
-	"web.monitor.com/model/validation"
-	"web.monitor.com/service"
 )
 
 func AddAlarm(c *gin.Context) {

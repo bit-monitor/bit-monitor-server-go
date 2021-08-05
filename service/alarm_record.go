@@ -1,8 +1,8 @@
 package service
 
 import (
-	"web.monitor.com/global"
-	"web.monitor.com/model"
+	"bit.monitor.com/global"
+	"bit.monitor.com/model"
 )
 
 // AddAlarmRecord 新增预警记录
