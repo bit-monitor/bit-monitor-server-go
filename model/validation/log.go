@@ -10,17 +10,17 @@ type AddClient struct {
 	Buname string `form:"bUname"`
 }
 
-type conditionListItem struct {
-	Key   string `form:"key"`
-	Value string `form:"value"`
-	Op    string `form:"op"`
+type ConditionListItem struct {
+	Key   string `form:"key" json:"key"`
+	Value string `form:"value" json:"value"`
+	Op    string `form:"op" json:"op"`
 }
 
 type ListLog struct {
 	PageInfo
-	StartTime         string              `form:"startTime" json:"startTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
-	EndTime           string              `form:"endTime" json:"endTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
-	LogType           string              `form:"logType" json:"logType"`
-	ProjectIdentifier string              `form:"projectIdentifier" json:"projectIdentifier"`
-	ConditionList     []conditionListItem `form:"conditionList" json:"conditionList" binding:"required"`
+	StartTime         string `form:"startTime" json:"startTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+	EndTime           string `form:"endTime" json:"endTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+	LogType           string `form:"logType" json:"logType"`
+	ProjectIdentifier string `form:"projectIdentifier" json:"projectIdentifier"`
+	ConditionList     []ConditionListItem
 }

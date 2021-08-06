@@ -5,6 +5,7 @@ import (
 	"bit.monitor.com/model/response"
 	"bit.monitor.com/model/validation"
 	"bit.monitor.com/service"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -81,14 +82,25 @@ func AddClient(c *gin.Context) {
 func ListLog(c *gin.Context) {
 	var err error
 	var r validation.ListLog
-	// 因gin暂时还不支持从content-type: multipart/form-data中解析出array等复杂结构
-	// ，因此这里暂时改为content-type: application/json的方式，跟java后台写的方案不一致
+
 	err = c.ShouldBind(&r)
 	if err != nil {
 		global.WM_LOG.Error("多条件高级查询失败", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
+
+	// 因gin暂时还不支持从content-type: application/x-www-form-urlencoded, 或content-type: multipart/form-data
+	// 中解析出array等复杂结构，因此这里暂时改为单独解构
+	var conditionList []validation.ConditionListItem
+	err = json.Unmarshal([]byte(c.PostForm("conditionList")), &conditionList)
+	if err != nil {
+		global.WM_LOG.Error("多条件高级查询失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+		return
+	}
+	r.ConditionList = conditionList
+
 	if err, data := service.ListLog(r); err != nil {
 		global.WM_LOG.Error("多条件高级查询失败", zap.Any("err", err))
 		response.FailWithError(err, c)
