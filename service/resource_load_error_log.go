@@ -105,10 +105,11 @@ func GetResourceLoadErrorLogByGroup(r validation.GetResourceLoadErrorLogByGroup)
 	offset := limit * (r.PageNum - 1)
 	db := global.WM_DB.Model(&model.LmsResourceLoadErrorLog{})
 	var totalNum int64
+	var recordsTotal []interface{}
 	var records []response.GetResourceLoadErrorLogByGroup
 
 	// 基础查询
-	dbCount := global.WM_DB.Model(&model.LmsResourceLoadErrorLog{})
+	dbCount := global.WM_DB.Model(&model.LmsResourceLoadErrorLog{}).Select("count(id) as count")
 	dbData := db.Select("count(id) as count, max(create_time) as latest_record_time, count(distinct c_uuid) as affect_user_count, resource_url as error_message")
 
 	// 日志类型
@@ -164,10 +165,11 @@ func GetResourceLoadErrorLogByGroup(r validation.GetResourceLoadErrorLogByGroup)
 	dbData = dbData.Group("resource_url").Order("count desc")
 
 	// 计算总计
-	err = dbCount.Count(&totalNum).Error
+	err = dbCount.Find(&recordsTotal).Count(&totalNum).Error
 	if err != nil {
 		return err, nil
 	}
+	totalNum = int64(len(recordsTotal))
 
 	// 分组
 	err = dbData.Limit(limit).Offset(offset).Find(&records).Error

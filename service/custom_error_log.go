@@ -101,10 +101,11 @@ func GetCustomErrorLogByGroup(r validation.GetCustomErrorLogByGroup) (err error,
 	offset := limit * (r.PageNum - 1)
 	db := global.WM_DB.Model(&model.LmsCustomErrorLog{})
 	var totalNum int64
+	var recordsTotal []interface{}
 	var records []response.GetCustomErrorLogByGroup
 
 	// 基础查询
-	dbCount := global.WM_DB.Model(&model.LmsCustomErrorLog{})
+	dbCount := global.WM_DB.Model(&model.LmsCustomErrorLog{}).Select("count(id) as count")
 	dbData := db.Select("count(id) as count, max(create_time) as latest_record_time, count(distinct c_uuid) as affect_user_count, error_message")
 
 	// 日志类型
@@ -155,10 +156,11 @@ func GetCustomErrorLogByGroup(r validation.GetCustomErrorLogByGroup) (err error,
 	dbData = dbData.Group("error_message").Order("count desc")
 
 	// 计算总计
-	err = dbCount.Count(&totalNum).Error
+	err = dbCount.Find(&recordsTotal).Count(&totalNum).Error
 	if err != nil {
 		return err, nil
 	}
+	totalNum = int64(len(recordsTotal))
 
 	// 分组
 	err = dbData.Limit(limit).Offset(offset).Find(&records).Error

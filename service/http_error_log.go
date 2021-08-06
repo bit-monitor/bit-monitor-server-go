@@ -116,10 +116,11 @@ func GetHttpErrorLogByGroup(r validation.GetHttpErrorLogByGroup) (err error, dat
 	offset := limit * (r.PageNum - 1)
 	db := global.WM_DB.Model(&model.LmsHttpErrorLog{})
 	var totalNum int64
+	var recordsTotal []interface{}
 	var records []response.GetHttpErrorLogByGroup
 
 	// 基础查询
-	dbCount := global.WM_DB.Model(&model.LmsHttpErrorLog{})
+	dbCount := global.WM_DB.Model(&model.LmsHttpErrorLog{}).Select("count(id) as count")
 	dbData := db.Select("count(id) as count, max(create_time) as latest_record_time, count(distinct c_uuid) as affect_user_count, http_url_complete as error_message")
 
 	// 日志类型
@@ -185,10 +186,11 @@ func GetHttpErrorLogByGroup(r validation.GetHttpErrorLogByGroup) (err error, dat
 	dbData = dbData.Group("http_url_complete").Order("count desc")
 
 	// 计算总计
-	err = dbCount.Count(&totalNum).Error
+	err = dbCount.Find(&recordsTotal).Count(&totalNum).Error
 	if err != nil {
 		return err, nil
 	}
+	totalNum = int64(len(recordsTotal))
 
 	// 分组
 	err = dbData.Limit(limit).Offset(offset).Find(&records).Error
