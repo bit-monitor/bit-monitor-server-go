@@ -218,8 +218,17 @@ func GetRelatedProjectList(userId uint64) (err error, data []response.RelatedPro
 	var list []response.RelatedProject
 	for _, project := range user.PmsProjects {
 		list = append(list, response.RelatedProject{
-			ProjectId:   project.Id,
-			ProjectName: project.ProjectName,
+			Id:                project.Id,
+			ProjectName:       project.ProjectName,
+			ProjectIdentifier: project.ProjectIdentifier,
+			Description:       project.Description,
+			AccessType:        project.AccessType,
+			ActiveFuncs:       project.ActiveFuncs,
+			IsAutoUpload:      project.IsAutoUpload,
+			NotifyDtToken:     project.NotifyDtToken,
+			NotifyEmail:       project.NotifyEmail,
+			CreateTime:        project.CreateTime,
+			UpdateTime:        project.UpdateTime,
 		})
 	}
 	return nil, list
