@@ -216,7 +216,7 @@ func GetLogCountBetweenDiffDate(r validation.GetLogCountBetweenDiffDate) (err er
 		logTypeResultList := make([]map[string]interface{}, 0)
 		for key, valueItem := range tempMap {
 			dataMap := make(map[string]interface{})
-			dataMap[key] = key
+			dataMap["key"] = key
 
 			// 计算count，日志数量
 			if utils.IsStringArrContainsStr(IndicatorList, "count") {
