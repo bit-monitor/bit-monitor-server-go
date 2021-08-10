@@ -16,9 +16,9 @@ type AuditUserRegisterRecord struct {
 
 type GetUserRegisterRecord struct {
 	PageInfo
-	StartTime   string `form:"startTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
-	EndTime     string `form:"endTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
-	AuditResult *int8  `form:"auditResult" binding:"omitempty,number,oneof=0 -1 1"`
+	StartTime   string `json:"startTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+	EndTime     string `json:"endTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+	AuditResult *int8  `json:"auditResult" binding:"omitempty,number,oneof=0 -1 1"`
 }
 
 type Login struct {
