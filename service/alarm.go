@@ -176,7 +176,7 @@ func GetAlarm(r validation.GetAlarm) (err error, data interface{}) {
 	db := global.WM_DB.Model(&model.AmsAlarm{})
 	var totalNum int64
 	var alarmList []model.AmsAlarm
-	var records []response.GetAlarm
+	records := make([]response.GetAlarm, 0)
 
 	// 预警名称
 	if r.Name != "" {
@@ -225,6 +225,9 @@ func GetAlarm(r validation.GetAlarm) (err error, data interface{}) {
 
 	err = db.Count(&totalNum).Error
 	err = db.Limit(limit).Offset(offset).Find(&alarmList).Error
+	if err != nil {
+		return
+	}
 
 	// 设置subscriberList
 	for _, alarm := range alarmList {
