@@ -6,6 +6,7 @@ import (
 	"bit.monitor.com/model/validation"
 	"bit.monitor.com/service"
 	"encoding/json"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
@@ -14,14 +15,30 @@ import (
 func AddAlarm(c *gin.Context) {
 	var err error
 	var r validation.AddAlarm
-	// 因gin暂时还不支持从content-type: multipart/form-data中解析出array等复杂结构
-	// ，因此这里暂时改为content-type: application/json的方式，跟java后台写的方案不一致
 	err = c.ShouldBind(&r)
 	if err != nil {
 		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
+
+	// 因gin暂时还不支持从content-type: application/x-www-form-urlencoded, 或content-type: multipart/form-data
+	// 中解析出array等复杂结构，因此这里暂时改为单独解构
+	subscriberListParam := c.PostForm("subscriberList")
+	if subscriberListParam == "" {
+		err = errors.New("subscriberList不能为空")
+		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+		return
+	}
+	var subscriberList []validation.Subscriber
+	err = json.Unmarshal([]byte(subscriberListParam), &subscriberList)
+	if err != nil {
+		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+		return
+	}
+
 	err, userId := service.GetUserIdByContext(c)
 	if err != nil {
 		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
