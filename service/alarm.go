@@ -3,6 +3,7 @@ package service
 import (
 	"bit.monitor.com/global"
 	"bit.monitor.com/model"
+	"bit.monitor.com/model/response"
 	"bit.monitor.com/model/validation"
 	"bit.monitor.com/utils"
 	"bit.monitor.com/utils/dingtalk"
@@ -174,7 +175,8 @@ func GetAlarm(r validation.GetAlarm) (err error, data interface{}) {
 	offset := limit * (r.PageNum - 1)
 	db := global.WM_DB.Model(&model.AmsAlarm{})
 	var totalNum int64
-	var records []model.AmsAlarm
+	var alarmList []model.AmsAlarm
+	var records []response.GetAlarm
 
 	// 预警名称
 	if r.Name != "" {
@@ -222,7 +224,32 @@ func GetAlarm(r validation.GetAlarm) (err error, data interface{}) {
 	}
 
 	err = db.Count(&totalNum).Error
-	err = db.Limit(limit).Offset(offset).Find(&records).Error
+	err = db.Limit(limit).Offset(offset).Find(&alarmList).Error
+
+	// 设置subscriberList
+	for _, alarm := range alarmList {
+		record := response.GetAlarm{
+			Id:                alarm.Id,
+			Name:              alarm.Name,
+			ProjectIdentifier: alarm.ProjectIdentifier,
+			Level:             alarm.Level,
+			Category:          alarm.Category,
+			Rule:              alarm.Rule,
+			StartTime:         alarm.StartTime,
+			EndTime:           alarm.EndTime,
+			SilentPeriod:      alarm.SilentPeriod,
+			IsActive:          alarm.IsActive,
+			CreateBy:          alarm.CreateBy,
+			IsDeleted:         alarm.IsDeleted,
+			SubscriberList:    "",
+		}
+		err = setSubscriberList(&record)
+		if err != nil {
+			break
+		}
+		records = append(records, record)
+	}
+
 	data = map[string]interface{}{
 		"totalNum":  totalNum,
 		"totalPage": math.Ceil(float64(totalNum) / float64(r.PageSize)),
@@ -265,6 +292,16 @@ func DeleteAlarm(alarmId uint64) (err error, data interface{}) {
 	}
 
 	return nil, true
+}
+
+// 设置subscriberList
+func setSubscriberList(a *response.GetAlarm) error {
+	var err error
+	alarmId := a.Id
+	subscriberEntityList := GetAllByAlarmId(alarmId)
+	subscriberList, err := json.Marshal(subscriberEntityList)
+	a.SubscriberList = string(subscriberList)
+	return err
 }
 
 // 启动预警定时任务
