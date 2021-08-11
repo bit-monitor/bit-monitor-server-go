@@ -178,6 +178,8 @@ func UpdateProject(r validation.UpdateProject) (err error, data interface{}) {
 		project.Description = r.Description
 		project.AccessType = r.AccessType
 		project.ActiveFuncs = r.ActiveFuncs
+		project.NotifyDtToken = r.NotifyDtToken
+		project.NotifyEmail = r.NotifyEmail
 		project.IsAutoUpload = r.IsAutoUpload
 		project.UpdateTime = time.Now()
 		err = db.Save(&project).Error

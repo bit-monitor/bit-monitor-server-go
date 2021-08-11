@@ -29,5 +29,7 @@ type UpdateProject struct {
 	UserList          []uint64
 	AccessType        string `form:"accessType"`
 	ActiveFuncs       string `form:"activeFuncs"`
+	NotifyDtToken     string `form:"notifyDtToken"`
+	NotifyEmail       string `form:"notifyEmail"`
 	IsAutoUpload      uint8  `form:"isAutoUpload"`
 }
