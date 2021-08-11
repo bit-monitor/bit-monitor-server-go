@@ -28,8 +28,8 @@ type Login struct {
 
 type GetUser struct {
 	IsNeedPaging *int8  `form:"isNeedPaging" binding:"omitempty,number,oneof=0 1"`
-	PageNum      int    `form:"pageNum" binding:"required_if=IsNeedPaging 1,number,gt=0"`
-	PageSize     int    `form:"pageSize" binding:"required_if=IsNeedPaging 1,number,gt=0"`
+	PageNum      int    `form:"pageNum" binding:"omitempty,number,gt=0"`
+	PageSize     int    `form:"pageSize" binding:"omitempty,number,gt=0"`
 	Username     string `form:"username"`
 	Phone        string `form:"phone"`
 	Gender       *int8  `form:"gender" binding:"omitempty,number,oneof=0 1 2"`
