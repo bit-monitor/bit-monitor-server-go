@@ -49,14 +49,17 @@ func UpdateAlarm(c *gin.Context) {
 
 	// 因gin暂时还不支持从content-type: application/x-www-form-urlencoded, 或content-type: multipart/form-data
 	// 中解析出array等复杂结构，因此这里暂时改为单独解构
-	var subscriberList []validation.Subscriber
-	err = json.Unmarshal([]byte(c.PostForm("subscriberList")), &subscriberList)
-	if err != nil {
-		global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
-		response.FailWithError(err, c)
-		return
+	subscriberListParam := c.PostForm("subscriberList")
+	if subscriberListParam != "" {
+		var subscriberList []validation.Subscriber
+		err = json.Unmarshal([]byte(subscriberListParam), &subscriberList)
+		if err != nil {
+			global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
+			response.FailWithError(err, c)
+			return
+		}
+		r.SubscriberList = subscriberList
 	}
-	r.SubscriberList = subscriberList
 
 	if err, data := service.UpdateAlarm(r); err != nil {
 		global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
