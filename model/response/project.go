@@ -7,6 +7,11 @@ type ProjectListItem struct {
 	ProjectName       string    `json:"projectName"`
 	ProjectIdentifier string    `json:"projectIdentifier"`
 	Description       string    `json:"description"`
+	AccessType        string    `json:"accessType"`
+	ActiveFuncs       string    `json:"activeFuncs"`
+	IsAutoUpload      uint8     `json:"isAutoUpload"`
+	NotifyDtToken     string    `json:"notifyDtToken"`
+	NotifyEmail       string    `json:"notifyEmail"`
 	CreateTime        time.Time `json:"createTime"`
 	UpdateTime        time.Time `json:"updateTime"`
 	UserList          string    `json:"userList"`
