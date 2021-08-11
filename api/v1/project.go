@@ -5,6 +5,7 @@ import (
 	"bit.monitor.com/model/response"
 	"bit.monitor.com/model/validation"
 	"bit.monitor.com/service"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
@@ -68,15 +69,20 @@ func GetProjectByProjectIdentifier(c *gin.Context) {
 
 func UpdateProject(c *gin.Context) {
 	var err error
+
 	var r validation.UpdateProject
-	// 因gin暂时还不支持从content-type: multipart/form-data中解析出array等复杂结构
-	// ，因此这里暂时改为content-type: application/json的方式，跟java后台写的方案不一致
 	err = c.ShouldBind(&r)
+
+	// 因gin暂时还不支持从content-type: application/x-www-form-urlencoded, 或content-type: multipart/form-data
+	// 中解析出array等复杂结构，因此这里暂时改为单独解构
+	var userList []uint64
+	err = json.Unmarshal([]byte(c.PostForm("userList")), &userList)
 	if err != nil {
 		global.WM_LOG.Error("更新项目失败", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
+	r.UserList = userList
 	if err, entity := service.UpdateProject(r); err != nil {
 		global.WM_LOG.Error("更新项目失败", zap.Any("err", err))
 		response.FailWithError(err, c)
