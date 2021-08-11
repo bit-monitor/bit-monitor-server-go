@@ -72,6 +72,11 @@ func UpdateProject(c *gin.Context) {
 
 	var r validation.UpdateProject
 	err = c.ShouldBind(&r)
+	if err != nil {
+		global.WM_LOG.Error("更新项目失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+		return
+	}
 
 	// 因gin暂时还不支持从content-type: application/x-www-form-urlencoded, 或content-type: multipart/form-data
 	// 中解析出array等复杂结构，因此这里暂时改为单独解构
