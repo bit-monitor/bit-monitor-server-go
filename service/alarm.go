@@ -129,9 +129,13 @@ func UpdateAlarm(r validation.UpdateAlarm) (err error, data interface{}) {
 		// 是否启用
 		if r.IsActive != nil {
 			// 若状态改为启动，则先停止已有的定时任务，再重新启动对应的定时任务
-			// TODO 停止已有的定时任务
+			stopAlarmScheduler(&entity)
+
 			if *r.IsActive == 1 {
-				// TODO 启动定时任务
+				err := startAlarmScheduler(tx, &entity)
+				if err != nil {
+					return err
+				}
 			}
 			entity.IsActive = *r.IsActive
 		}
@@ -282,7 +286,7 @@ func DeleteAlarm(alarmId uint64) (err error, data interface{}) {
 		}
 
 		// 停止预警定时任务
-		// TODO 停止已有的定时任务
+		stopAlarmScheduler(&entity)
 
 		// 删除实体记录
 		err = db.Delete(&entity).Error
@@ -352,6 +356,25 @@ func GetAlarmRecord(r validation.GetAlarmRecord) (err error, data interface{}) {
 		"records":   records,
 	}
 	return err, data
+}
+
+// GetProjectNameByAlarmId 根据alarmId获取关联的项目名称
+func GetProjectNameByAlarmId(alarmId uint64) (error, string) {
+	db := global.WM_DB.Model(&model.AmsAlarm{})
+	var err error
+	var alarm model.AmsAlarm
+	err = db.Where("`id` = ?", alarmId).First(&alarm).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("找不到预警信息")
+		}
+		return err, ""
+	}
+	err, projectName := GetProjectNameByProjectIdentifier(alarm.ProjectIdentifier)
+	if err != nil {
+		return err, ""
+	}
+	return nil, projectName
 }
 
 // 设置subscriberList
@@ -447,23 +470,49 @@ func startAlarmScheduler(tx *gorm.DB, entity *model.AmsAlarm) error {
 	return err
 }
 
-// GetProjectNameByAlarmId 根据alarmId获取关联的项目名称
-func GetProjectNameByAlarmId(alarmId uint64) (error, string) {
-	db := global.WM_DB.Model(&model.AmsAlarm{})
-	var err error
-	var alarm model.AmsAlarm
-	err = db.Where("`id` = ?", alarmId).First(&alarm).Error
+// 停止预警定时任务
+func stopAlarmScheduler(alarm *model.AmsAlarm) {
+
+	// 若预警未启动，则跳过
+	if alarm.IsActive == 0 {
+		return
+	}
+
+	// 若为启动中的预警
+	err, relationList := GetAllAlarmSchedulerRelationByAlarmId(alarm.Id)
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = errors.New("找不到预警信息")
+		global.WM_LOG.Error("停止预警定时任务失败", zap.Any("err", err))
+		return
+	}
+	if len(relationList) == 0 {
+		global.WM_LOG.Info("停止预警定时任务", zap.String("relationList", "没有找到关联的信息"))
+		return
+	}
+
+	for _, asr := range relationList {
+		schedulerId := asr.SchedulerId
+
+		// 终止其关联的执行中的定时任务
+		err = utils.StopAndDeleteBySchedulerId(schedulerId)
+		if err != nil {
+			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("StopAndDeleteBySchedulerId", err))
+			return
 		}
-		return err, ""
+
+		// 删除定时任务
+		err = DeleteSchedulerById(schedulerId)
+		if err != nil {
+			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("DeleteSchedulerById", err))
+			return
+		}
+
+		// 删除预警-定时任务关联表
+		err = DeleteAlarmSchedulerRelationById(asr.Id)
+		if err != nil {
+			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("DeleteAlarmSchedulerRelationById", err))
+			return
+		}
 	}
-	err, projectName := GetProjectNameByProjectIdentifier(alarm.ProjectIdentifier)
-	if err != nil {
-		return err, ""
-	}
-	return nil, projectName
 }
 
 // startAlarmSchedule 预警定时任务执行的内容

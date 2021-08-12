@@ -22,3 +22,21 @@ func AddAlarmSchedulerRelation(tx *gorm.DB, alarmId uint64, schedulerId uint64) 
 	}
 	return nil
 }
+
+// GetAllAlarmSchedulerRelationByAlarmId 根据预警id获取所有关联实体
+func GetAllAlarmSchedulerRelationByAlarmId(alarmId uint64) (error, []*model.AmsAlarmSchedulerRelation) {
+	var err error
+	var list []*model.AmsAlarmSchedulerRelation
+	db := global.WM_DB.Model(&model.AmsAlarmSchedulerRelation{})
+	err = db.Where("`alarm_id` = ?", alarmId).Find(&list).Error
+	if err != nil {
+		return err, nil
+	}
+	return nil, list
+}
+
+// DeleteAlarmSchedulerRelationById 根据id删除AlarmSchedulerRelation实体
+func DeleteAlarmSchedulerRelationById(id uint64) error {
+	err := global.WM_DB.Where("`id` = ?", id).Delete(&model.AmsAlarmSchedulerRelation{}).Error
+	return err
+}

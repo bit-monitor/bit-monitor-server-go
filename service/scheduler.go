@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bit.monitor.com/global"
 	"bit.monitor.com/model"
 	"gorm.io/gorm"
 	"time"
@@ -29,4 +30,10 @@ func AddScheduler(tx *gorm.DB, params string) (error, *model.TmsScheduler) {
 		return err, nil
 	}
 	return nil, &schedulerEntity
+}
+
+// DeleteSchedulerById 根据id删除Scheduler实体
+func DeleteSchedulerById(id uint64) error {
+	err := global.WM_DB.Where("`id` = ?", id).Delete(&model.TmsScheduler{}).Error
+	return err
 }

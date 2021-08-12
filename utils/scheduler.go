@@ -58,3 +58,16 @@ func (s Scheduler) Stop() error {
 	}
 	return err
 }
+
+// StopAndDeleteBySchedulerId 根据定时任务id结束并删除任务
+func StopAndDeleteBySchedulerId(schedulerId uint64) error {
+	var err error
+	c := scheduleTasks[schedulerId]
+	if c == nil {
+		err = errors.New("无法停止定时任务，因定时任务队列中找不到已启动的任务")
+	} else {
+		err = c.Stop().Err()
+		delete(scheduleTasks, schedulerId)
+	}
+	return err
+}
