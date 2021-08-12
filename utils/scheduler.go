@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
+	"sync"
 )
 
-var scheduleTasks = make(map[uint64]*cron.Cron)
+// 由于map在并发的情况下是读写不安全的，因此需要改用sync.map的方式来解决
+var scheduleTasks = sync.Map{}
 
 // Scheduler
 // 此处的BeanName、MethodName，是为了保持与Java后台写法一致所以保留的
@@ -39,7 +41,7 @@ func (s Scheduler) Start(f func(s string) error) error {
 
 	// 开始定时任务后，存入任务队列中
 	c.Start()
-	scheduleTasks[s.SchedulerId] = c
+	scheduleTasks.Store(s.SchedulerId, c)
 	global.WM_LOG.Info("[信息]定时任务已存入任务队列", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v", s.BeanName, s.MethodName, s.Params)))
 
 	return err
@@ -49,12 +51,13 @@ func (s Scheduler) Start(f func(s string) error) error {
 // 停止定时任务
 func (s Scheduler) Stop() error {
 	var err error
-	c := scheduleTasks[s.SchedulerId]
-	if c == nil {
+	v, ok := scheduleTasks.Load(s.SchedulerId)
+	if !ok {
 		err = errors.New("无法停止定时任务，因定时任务队列中找不到已启动的任务")
 	} else {
+		c, _ := v.(*cron.Cron)
 		err = c.Stop().Err()
-		delete(scheduleTasks, s.SchedulerId)
+		scheduleTasks.Delete(s.SchedulerId)
 	}
 	return err
 }
@@ -62,12 +65,13 @@ func (s Scheduler) Stop() error {
 // StopAndDeleteBySchedulerId 根据定时任务id结束并删除任务
 func StopAndDeleteBySchedulerId(schedulerId uint64) error {
 	var err error
-	c := scheduleTasks[schedulerId]
-	if c == nil {
+	v, ok := scheduleTasks.Load(schedulerId)
+	if !ok {
 		err = errors.New("无法停止定时任务，因定时任务队列中找不到已启动的任务")
 	} else {
+		c, _ := v.(*cron.Cron)
 		err = c.Stop().Err()
-		delete(scheduleTasks, schedulerId)
+		scheduleTasks.Delete(schedulerId)
 	}
 	return err
 }
