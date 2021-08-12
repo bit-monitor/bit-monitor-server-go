@@ -19,10 +19,10 @@ func AddUserRegisterRecord(c *gin.Context) {
 		return
 	}
 	if err, entity := service.AddUserRegisterRecord(r); err != nil {
-		global.WM_LOG.Error("注册失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]注册", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("注册成功", zap.Any("entity", entity))
+		global.WM_LOG.Info("[成功]注册", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }
@@ -37,10 +37,10 @@ func AuditUserRegisterRecord(c *gin.Context) {
 		return
 	}
 	if err, entity := service.AuditUserRegisterRecord(r); err != nil {
-		global.WM_LOG.Error("注册审批失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]注册审批", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("注册审批成功", zap.Any("entity", entity))
+		global.WM_LOG.Info("[成功]注册审批", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }

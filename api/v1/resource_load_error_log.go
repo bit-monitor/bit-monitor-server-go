@@ -76,7 +76,7 @@ func GetOverallByTimeRange(c *gin.Context) {
 		global.WM_LOG.Error("[失败]获取总览统计信息", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("获取总览统计信息成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]获取总览统计信息", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

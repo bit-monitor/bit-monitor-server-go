@@ -53,10 +53,10 @@ func AddLog(c *gin.Context) {
 		break
 	}
 	if err != nil {
-		global.WM_LOG.Error("通用日志打点上传失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]通用日志打点上传", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("通用日志打点上传成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]通用日志打点上传", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -71,10 +71,10 @@ func AddClient(c *gin.Context) {
 		return
 	}
 	if err, data := service.AddClient(r); err != nil {
-		global.WM_LOG.Error("新增日志客户端用户失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增日志客户端用户", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("新增日志客户端用户成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]新增日志客户端用户", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -102,10 +102,10 @@ func ListLog(c *gin.Context) {
 	r.ConditionList = conditionList
 
 	if err, data := service.ListLog(r); err != nil {
-		global.WM_LOG.Error("多条件高级查询失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]多条件高级查询", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("多条件高级查询成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]多条件高级查询", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

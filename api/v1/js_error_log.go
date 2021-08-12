@@ -37,10 +37,10 @@ func GetJsErrorLog(c *gin.Context) {
 		return
 	}
 	if err, data := service.GetJsErrorLog(r); err != nil {
-		global.WM_LOG.Error("条件查询js异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]条件查询js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("条件查询js异常日志成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]条件查询js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -55,10 +55,10 @@ func GetJsErrorLogByGroup(c *gin.Context) {
 		return
 	}
 	if err, data := service.GetJsErrorLogByGroup(r); err != nil {
-		global.WM_LOG.Error("聚合查询js异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]聚合查询js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("聚合查询js异常日志成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]聚合查询js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
