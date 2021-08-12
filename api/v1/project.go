@@ -26,7 +26,7 @@ func AddProject(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增项目", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增项目", zap.Any("entity", entity))
+		// global.WM_LOG.Info("[成功]新增项目", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }
@@ -92,7 +92,7 @@ func UpdateProject(c *gin.Context) {
 		global.WM_LOG.Error("[失败]更新项目", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]更新项目", zap.Any("entity", entity))
+		// global.WM_LOG.Info("[成功]更新项目", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }

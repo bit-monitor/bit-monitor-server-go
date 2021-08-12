@@ -22,7 +22,7 @@ func AddHttpErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增http异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增http异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增http异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -40,7 +40,7 @@ func GetHttpErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]条件查询http异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]条件查询http异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]条件查询http异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -58,7 +58,7 @@ func GetHttpErrorLogByGroup(c *gin.Context) {
 		global.WM_LOG.Error("[失败]聚合查询http异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]聚合查询http异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]聚合查询http异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -76,7 +76,7 @@ func GetLogCountByState(c *gin.Context) {
 		global.WM_LOG.Error("[失败]按status分类获取http日志数量", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]按status分类获取http日志数量", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]按status分类获取http日志数量", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

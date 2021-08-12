@@ -56,7 +56,7 @@ func AddLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]通用日志打点上传", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]通用日志打点上传", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]通用日志打点上传", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -74,7 +74,7 @@ func AddClient(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增日志客户端用户", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增日志客户端用户", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增日志客户端用户", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -105,7 +105,7 @@ func ListLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]多条件高级查询", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]多条件高级查询", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]多条件高级查询", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

@@ -22,7 +22,7 @@ func AddResourceLoadErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增resourceLoad异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增resourceLoad异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增resourceLoad异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -40,7 +40,7 @@ func GetResourceLoadErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]条件查询resourceLoad异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]条件查询resourceLoad异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]条件查询resourceLoad异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -58,7 +58,7 @@ func GetResourceLoadErrorLogByGroup(c *gin.Context) {
 		global.WM_LOG.Error("[失败]聚合查询resourceLoad异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]聚合查询resourceLoad异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]聚合查询resourceLoad异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -76,7 +76,7 @@ func GetOverallByTimeRange(c *gin.Context) {
 		global.WM_LOG.Error("[失败]获取总览统计信息", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]获取总览统计信息", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]获取总览统计信息", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

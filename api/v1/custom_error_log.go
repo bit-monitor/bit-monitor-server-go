@@ -22,7 +22,7 @@ func AddCustomErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增custom异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增custom异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增custom异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -40,7 +40,7 @@ func GetCustomErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]条件查询custom异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]条件查询custom异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]条件查询custom异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -58,7 +58,7 @@ func GetCustomErrorLogByGroup(c *gin.Context) {
 		global.WM_LOG.Error("[失败]聚合查询custom异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]聚合查询custom异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]聚合查询custom异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

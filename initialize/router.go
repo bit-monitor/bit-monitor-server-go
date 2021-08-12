@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"bit.monitor.com/global"
+	//"bit.monitor.com/global"
 	"bit.monitor.com/middleware"
 	"bit.monitor.com/router"
 	"github.com/gin-gonic/gin"

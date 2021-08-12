@@ -22,7 +22,7 @@ func AddJsErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]增js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增js异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -40,7 +40,7 @@ func GetJsErrorLog(c *gin.Context) {
 		global.WM_LOG.Error("[失败]条件查询js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]条件查询js异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]条件查询js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -58,7 +58,7 @@ func GetJsErrorLogByGroup(c *gin.Context) {
 		global.WM_LOG.Error("[失败]聚合查询js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]聚合查询js异常日志", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]聚合查询js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

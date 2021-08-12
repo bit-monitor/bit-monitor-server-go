@@ -22,7 +22,7 @@ func AddUserRegisterRecord(c *gin.Context) {
 		global.WM_LOG.Error("[失败]注册", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]注册", zap.Any("entity", entity))
+		// global.WM_LOG.Info("[成功]注册", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }
@@ -40,7 +40,7 @@ func AuditUserRegisterRecord(c *gin.Context) {
 		global.WM_LOG.Error("[失败]注册审批", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]注册审批", zap.Any("entity", entity))
+		// global.WM_LOG.Info("[成功]注册审批", zap.Any("entity", entity))
 		response.SuccessWithData(entity, c)
 	}
 }

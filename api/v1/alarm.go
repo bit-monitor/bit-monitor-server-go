@@ -49,7 +49,7 @@ func AddAlarm(c *gin.Context) {
 		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]新增预警", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]新增预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -82,7 +82,7 @@ func UpdateAlarm(c *gin.Context) {
 		global.WM_LOG.Error("[失败]编辑预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]编辑预警", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]编辑预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -100,7 +100,7 @@ func GetAlarm(c *gin.Context) {
 		global.WM_LOG.Error("[失败]查询预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]查询预警", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]查询预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -141,7 +141,7 @@ func GetAlarmRecord(c *gin.Context) {
 		global.WM_LOG.Error("[失败]查询预警记录", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("[成功]查询预警记录", zap.Any("data", data))
+		// global.WM_LOG.Info("[成功]查询预警记录", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

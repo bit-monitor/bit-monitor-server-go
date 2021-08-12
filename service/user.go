@@ -246,7 +246,7 @@ func createUser(user *model.UmsUser) error {
 	if err != nil {
 		return err
 	} else {
-		global.WM_LOG.Info("[成功]新增用户", zap.Any("user", user))
+		// global.WM_LOG.Info("[成功]新增用户", zap.Any("user", user))
 		return nil
 	}
 }
