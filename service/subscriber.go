@@ -45,18 +45,17 @@ func GetAllByAlarmId(alarmId uint64) []*model.AmsSubscriber {
 	return records
 }
 
-// GetCategoryBySubscriberId 根据id获取category
-func GetCategoryBySubscriberId(subscriberId uint64) (err error, category int8) {
+// GetSubscriberById 通过id获取subscriber实体
+func GetSubscriberById(id uint64) (error, *model.AmsSubscriber) {
+	var err error
+	var subscriber model.AmsSubscriber
 	db := global.WM_DB.Model(&model.AmsSubscriber{})
-	var e model.AmsSubscriber
-	err = db.Where("`id` = ?", subscriberId).First(&e).Error
+	err = db.Where("`id` = ?", id).First(&subscriber).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("subscriber不存在")
 		}
-		global.WM_LOG.Error("subscriber不存在", zap.Any("err", err))
-		return
+		return err, nil
 	}
-	category = e.Category
-	return
+	return nil, &subscriber
 }

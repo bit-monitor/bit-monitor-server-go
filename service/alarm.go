@@ -330,7 +330,7 @@ func GetAlarmRecord(r validation.GetAlarmRecord) (err error, data interface{}) {
 
 	// 设置alarmName
 	for _, alarmRecord := range alarmRecordList {
-		err, alarmName := getAlarmNameByAlarmId(alarmRecord.AlarmId)
+		err, alarm := GetAlarmById(alarmRecord.AlarmId)
 		if err != nil {
 			break
 		}
@@ -338,7 +338,7 @@ func GetAlarmRecord(r validation.GetAlarmRecord) (err error, data interface{}) {
 			Id:         alarmRecord.Id,
 			AlarmId:    alarmRecord.AlarmId,
 			AlarmData:  alarmRecord.AlarmData,
-			AlarmName:  alarmName,
+			AlarmName:  alarm.Name,
 			CreateTime: alarmRecord.CreateTime,
 		}
 		records = append(records, record)
@@ -364,17 +364,17 @@ func setSubscriberList(a *response.GetAlarm) error {
 	return err
 }
 
-// 根据预警id获取预警名称
-func getAlarmNameByAlarmId(alarmId uint64) (err error, alarmName string) {
+// GetAlarmById 根据id获取alarm实体
+func GetAlarmById(id uint64) (error, *model.AmsAlarm) {
+	var err error
 	var alarm model.AmsAlarm
 	db := global.WM_DB.Model(&model.AmsAlarm{})
-	err = db.Where("`id` = ?", alarmId).First(&alarm).Error
+	err = db.Where("`id` = ?", id).First(&alarm).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = errors.New("预警不存在")
-		return err, ""
+		return err, nil
 	}
-	alarmName = alarm.Name
-	return nil, alarmName
+	return nil, &alarm
 }
 
 // 启动预警定时任务

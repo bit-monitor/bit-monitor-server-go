@@ -9,6 +9,7 @@ import (
 func InitSubscriberNotifyRecordRouterPrivate(Router *gin.RouterGroup) {
 	BaseRouter := Router.Group("subscriberNotifyRecord")
 	{
-		BaseRouter.GET("get", v1.GetSubscriberNotifyRecord) // 查询报警记录
+		BaseRouter.GET("get", v1.GetSubscriberNotifyRecord)                               // 查询报警记录
+		BaseRouter.GET("getWithRelatedInfo", v1.GetWithRelatedInfoSubscriberNotifyRecord) // 查询报警记录-带关联信息
 	}
 }
