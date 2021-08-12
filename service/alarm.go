@@ -146,7 +146,7 @@ func UpdateAlarm(r validation.UpdateAlarm) (err error, data interface{}) {
 		if len(r.SubscriberList) > 0 {
 			alarmId := entity.Id
 			// 先删除已有的关联关系
-			err = DeleteAllByAlarmId(tx, alarmId)
+			err = DeleteAllSubscriberByAlarmId(tx, alarmId)
 			if err != nil {
 				return err
 			}
@@ -280,7 +280,7 @@ func DeleteAlarm(alarmId uint64) (err error, data interface{}) {
 		}
 
 		// 删除关联的订阅者
-		err = DeleteAllByAlarmId(tx, alarmId)
+		err = DeleteAllSubscriberByAlarmId(tx, alarmId)
 		if err != nil {
 			return err
 		}
@@ -381,7 +381,7 @@ func GetProjectNameByAlarmId(alarmId uint64) (error, string) {
 func setSubscriberList(a *response.GetAlarm) error {
 	var err error
 	alarmId := a.Id
-	subscriberEntityList := GetAllByAlarmId(alarmId)
+	subscriberEntityList := GetAllSubscriberByAlarmId(alarmId)
 	subscriberList, err := json.Marshal(subscriberEntityList)
 	a.SubscriberList = string(subscriberList)
 	return err
@@ -610,7 +610,7 @@ func setResultListByTempList(tempList *[]*validation.AlarmScheduleResult, result
 // 保存报警记录，同时通知所有报警订阅方
 func saveAlarmRecordAndNotifyAllSubscribers(alarm *model.AmsAlarm, resultList []*validation.AlarmScheduleResult) error {
 	var err error
-	subscriberEntityList := GetAllByAlarmId(alarm.Id)
+	subscriberEntityList := GetAllSubscriberByAlarmId(alarm.Id)
 
 	// 保存报警记录
 	alarmData, err := json.Marshal(resultList)

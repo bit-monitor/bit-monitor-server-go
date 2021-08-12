@@ -27,15 +27,15 @@ func AddSubscriber(tx *gorm.DB, s validation.Subscriber, alarmId uint64) (err er
 	return err
 }
 
-// DeleteAllByAlarmId 根据alarmId删除所有关联的subscriber
-func DeleteAllByAlarmId(tx *gorm.DB, alarmId uint64) (err error) {
+// DeleteAllSubscriberByAlarmId 根据alarmId删除所有关联的subscriber
+func DeleteAllSubscriberByAlarmId(tx *gorm.DB, alarmId uint64) (err error) {
 	db := tx.Model(&model.AmsSubscriber{})
 	err = db.Where("`alarm_id` = ?", alarmId).Delete(model.AmsSubscriber{}).Error
 	return err
 }
 
-// GetAllByAlarmId 根据alarmId获取所有关联的subscriber
-func GetAllByAlarmId(alarmId uint64) []*model.AmsSubscriber {
+// GetAllSubscriberByAlarmId 根据alarmId获取所有关联的subscriber
+func GetAllSubscriberByAlarmId(alarmId uint64) []*model.AmsSubscriber {
 	db := global.WM_DB.Model(&model.AmsSubscriber{})
 	var records []*model.AmsSubscriber
 	db.Where("`alarm_id` = ?", alarmId).Find(&records)
