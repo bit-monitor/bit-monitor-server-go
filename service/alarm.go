@@ -496,7 +496,7 @@ func stopAlarmScheduler(alarm *model.AmsAlarm) {
 		err = utils.StopAndDeleteBySchedulerId(schedulerId)
 		if err != nil {
 			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("StopAndDeleteBySchedulerId", err))
-			return
+			continue
 		}
 
 		// 删除定时任务
