@@ -282,7 +282,10 @@ func CheckIsExceedAlarmThreshold(tableName string, ruleItem *validation.Schedule
 		default:
 			break
 		}
-		uvRate := float64(uvCount / uvTotal * 100)
+		uvRate := 0.0
+		if uvTotal > 0 {
+			uvRate = float64(uvCount / uvTotal * 100)
+		}
 		if op == ">" {
 			if agg == "count" {
 				isExceedAlarmThreshold = uvRate > val
@@ -324,7 +327,10 @@ func CheckIsExceedAlarmThreshold(tableName string, ruleItem *validation.Schedule
 			default:
 				break
 			}
-			preUvRate := float64(preUvCount / uvTotal)
+			preUvRate := 0.0
+			if uvTotal > 0 {
+				preUvRate = float64(preUvCount / uvTotal)
+			}
 			if op == "d_up" {
 				if agg == "count" {
 					isExceedAlarmThreshold = preUvRate > uvRate
@@ -367,7 +373,10 @@ func CheckIsExceedAlarmThreshold(tableName string, ruleItem *validation.Schedule
 			default:
 				break
 			}
-			preUvRate := float64(preUvCount / uvTotal)
+			preUvRate := 0.0
+			if uvTotal > 0 {
+				preUvRate = float64(preUvCount / uvTotal)
+			}
 			if op == "w_up" {
 				if agg == "count" {
 					isExceedAlarmThreshold = preUvRate > uvRate
@@ -412,7 +421,10 @@ func CheckIsExceedAlarmThreshold(tableName string, ruleItem *validation.Schedule
 		default:
 			break
 		}
-		pvRate := float64(pvCount / uvTotal)
+		pvRate := 0.0
+		if uvTotal > 0 {
+			pvRate = float64(pvCount / uvTotal)
+		}
 		if op == ">" {
 			if agg == "count" {
 				isExceedAlarmThreshold = pvRate > val
@@ -497,7 +509,10 @@ func CheckIsExceedAlarmThreshold(tableName string, ruleItem *validation.Schedule
 			default:
 				break
 			}
-			preUvRate := float64(preUvCount / uvTotal)
+			preUvRate := 0.0
+			if uvTotal > 0 {
+				preUvRate = float64(preUvCount / uvTotal)
+			}
 			if op == "w_up" {
 				if agg == "count" {
 					isExceedAlarmThreshold = preUvRate > pvRate
