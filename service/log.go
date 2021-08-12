@@ -33,7 +33,11 @@ func AddClient(r validation.AddClient) (err error, data interface{}) {
 
 func ListLog(r validation.ListLog) (err error, data interface{}) {
 	var db *gorm.DB
-	var records = make([]map[string]interface{}, 0)
+	var records interface{}
+	var recordsJs = make([]model.LmsJsErrorLog, 0)
+	var recordsHttp = make([]model.LmsHttpErrorLog, 0)
+	var recordsRes = make([]model.LmsResourceLoadErrorLog, 0)
+	var recordsCus = make([]model.LmsCustomErrorLog, 0)
 	limit := r.PageSize
 	offset := limit * (r.PageNum - 1)
 	var totalNum int64
@@ -74,7 +78,24 @@ func ListLog(r validation.ListLog) (err error, data interface{}) {
 	}
 
 	err = db.Count(&totalNum).Error
-	err = db.Limit(limit).Offset(offset).Find(&records).Order("create_time desc").Error
+	switch r.LogType {
+	case "jsErrorLog":
+		err = db.Limit(limit).Offset(offset).Find(&recordsJs).Order("create_time desc").Error
+		records = recordsJs
+		break
+	case "httpErrorLog":
+		err = db.Limit(limit).Offset(offset).Find(&recordsHttp).Order("create_time desc").Error
+		records = recordsHttp
+		break
+	case "resourceLoadErrorLog":
+		err = db.Limit(limit).Offset(offset).Find(&recordsRes).Order("create_time desc").Error
+		records = recordsRes
+		break
+	case "customErrorLog":
+		err = db.Limit(limit).Offset(offset).Find(&recordsCus).Order("create_time desc").Error
+		records = recordsCus
+		break
+	}
 	data = map[string]interface{}{
 		"totalNum":  totalNum,
 		"totalPage": math.Ceil(float64(totalNum) / float64(r.PageSize)),
