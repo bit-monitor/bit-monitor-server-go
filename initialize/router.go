@@ -38,6 +38,7 @@ func Router() *gin.Engine {
 		router.InitStatisticRouterPrivate(PrivateGroup)
 		router.InitLogRouterPrivate(PrivateGroup)
 		router.InitAlarmRouterPrivate(PrivateGroup)
+		router.InitSubscriberNotifyRecordRouterPrivate(PrivateGroup)
 	}
 	global.WM_LOG.Info("路由注册成功")
 	return Router

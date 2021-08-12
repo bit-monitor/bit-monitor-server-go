@@ -4,6 +4,7 @@ import (
 	"bit.monitor.com/global"
 	"bit.monitor.com/model"
 	"bit.monitor.com/model/validation"
+	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -42,4 +43,20 @@ func GetAllByAlarmId(alarmId uint64) []*model.AmsSubscriber {
 		global.WM_LOG.Error("根据alarmId获取所有关联的subscriber失败", zap.Any("err", "找不到记录"))
 	}
 	return records
+}
+
+// GetCategoryBySubscriberId 根据id获取category
+func GetCategoryBySubscriberId(subscriberId uint64) (err error, category int8) {
+	db := global.WM_DB.Model(&model.AmsSubscriber{})
+	var e model.AmsSubscriber
+	err = db.Where("`id` = ?", subscriberId).First(&e).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("subscriber不存在")
+		}
+		global.WM_LOG.Error("subscriber不存在", zap.Any("err", err))
+		return
+	}
+	category = e.Category
+	return
 }
