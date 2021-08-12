@@ -213,7 +213,7 @@ func GetRelatedProjectList(userId uint64) (err error, data []response.RelatedPro
 		data = nil
 		return
 	}
-	global.WM_LOG.Info("用户关联的项目", zap.Any("user", user))
+	global.WM_LOG.Info("[信息]用户关联的项目", zap.Any("user", user))
 
 	var list []response.RelatedProject
 	for _, project := range user.PmsProjects {
@@ -246,7 +246,7 @@ func createUser(user *model.UmsUser) error {
 	if err != nil {
 		return err
 	} else {
-		global.WM_LOG.Info("新增用户成功", zap.Any("user", user))
+		global.WM_LOG.Info("[成功]新增用户", zap.Any("user", user))
 		return nil
 	}
 }

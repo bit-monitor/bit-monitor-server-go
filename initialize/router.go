@@ -40,6 +40,6 @@ func Router() *gin.Engine {
 		router.InitAlarmRouterPrivate(PrivateGroup)
 		router.InitSubscriberNotifyRecordRouterPrivate(PrivateGroup)
 	}
-	global.WM_LOG.Info("路由注册成功")
+	global.WM_LOG.Info("[成功]路由注册")
 	return Router
 }

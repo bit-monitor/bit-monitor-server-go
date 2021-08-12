@@ -43,7 +43,7 @@ func AddAlarm(r validation.AddAlarm, userId uint64) (err error, data interface{}
 		}
 		err = db.Create(&entity).Error
 		if err != nil {
-			global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+			global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 			return err
 		}
 
@@ -70,7 +70,7 @@ func AddAlarm(r validation.AddAlarm, userId uint64) (err error, data interface{}
 	})
 
 	if err != nil {
-		global.WM_LOG.Error("新增预警失败-事务回滚", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警-事务回滚", zap.Any("err", err))
 		return err, nil
 	}
 
@@ -167,7 +167,7 @@ func UpdateAlarm(r validation.UpdateAlarm) (err error, data interface{}) {
 	})
 
 	if err != nil {
-		global.WM_LOG.Error("编辑预警失败-事务回滚", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]编辑预警-事务回滚", zap.Any("err", err))
 		return err, nil
 	}
 
@@ -294,7 +294,7 @@ func DeleteAlarm(alarmId uint64) (err error, data interface{}) {
 	})
 
 	if err != nil {
-		global.WM_LOG.Error("删除预警失败-事务回滚", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]删除预警-事务回滚", zap.Any("err", err))
 		return err, nil
 	}
 
@@ -404,7 +404,7 @@ func GetAlarmById(id uint64) (error, *model.AmsAlarm) {
 func startAlarmScheduler(tx *gorm.DB, entity *model.AmsAlarm) error {
 	params, err := utils.StructToJson(entity)
 	if err != nil {
-		global.WM_LOG.Error("启动预警定时任务失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]启动预警定时任务", zap.Any("err", err))
 		return err
 	}
 
@@ -439,11 +439,11 @@ func stopAlarmScheduler(alarm *model.AmsAlarm) {
 	// 若为启动中的预警
 	err, relationList := GetAllAlarmSchedulerRelationByAlarmId(alarm.Id)
 	if err != nil {
-		global.WM_LOG.Error("停止预警定时任务失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]停止预警定时任务", zap.Any("err", err))
 		return
 	}
 	if len(relationList) == 0 {
-		global.WM_LOG.Info("停止预警定时任务", zap.String("relationList", "没有找到关联的信息"))
+		global.WM_LOG.Info("[失败]停止预警定时任务", zap.String("relationList", "没有找到关联的信息"))
 		return
 	}
 
@@ -453,21 +453,21 @@ func stopAlarmScheduler(alarm *model.AmsAlarm) {
 		// 终止其关联的执行中的定时任务
 		err = utils.StopAndDeleteBySchedulerId(schedulerId)
 		if err != nil {
-			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("StopAndDeleteBySchedulerId", err))
+			global.WM_LOG.Error("[失败]停止预警定时任务", zap.Any("StopAndDeleteBySchedulerId", err))
 			continue
 		}
 
 		// 删除定时任务
 		err = DeleteSchedulerById(schedulerId)
 		if err != nil {
-			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("DeleteSchedulerById", err))
+			global.WM_LOG.Error("[失败]停止预警定时任务", zap.Any("DeleteSchedulerById", err))
 			return
 		}
 
 		// 删除预警-定时任务关联表
 		err = DeleteAlarmSchedulerRelationById(asr.Id)
 		if err != nil {
-			global.WM_LOG.Error("停止预警定时任务失败", zap.Any("DeleteAlarmSchedulerRelationById", err))
+			global.WM_LOG.Error("[失败]停止预警定时任务", zap.Any("DeleteAlarmSchedulerRelationById", err))
 			return
 		}
 	}
@@ -478,7 +478,7 @@ func startAlarmSchedule(params string) error {
 	var entity model.AmsAlarm
 	err := json.Unmarshal([]byte(params), &entity)
 	if err != nil {
-		global.WM_LOG.Error("定时任务执行失败-解析params参数异常", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]定时任务执行-解析params参数异常", zap.Any("err", err))
 		return err
 	}
 
@@ -534,7 +534,7 @@ func startAlarmSchedule(params string) error {
 	}
 	if (op == "&&" && isAnd) || (op == "||" && isOr) {
 		// 触发预警条件，添加报警记录
-		global.WM_LOG.Info("[预警定时任务]", zap.Any("info", fmt.Sprintf("预警名称：%v，报警内容：%v", entity.Name, resultList)))
+		global.WM_LOG.Info("[信息]预警定时任务", zap.Any("info", fmt.Sprintf("预警名称：%v，报警内容：%v", entity.Name, resultList)))
 		err := saveAlarmRecordAndNotifyAllSubscribers(&entity, resultList)
 		if err != nil {
 			return err
@@ -669,7 +669,7 @@ func notifyAllSubscribers(alarmId uint64, alarmRecordId uint64, resultList []*va
 							}
 							err, client := dingtalk.NewClient(config)
 							if err != nil {
-								global.WM_LOG.Error("发送钉钉机器人通知失败", zap.Any("err", err))
+								global.WM_LOG.Error("[失败]发送钉钉机器人通知", zap.Any("err", err))
 							}
 							params := dingtalk.GetTextParams()
 							params.Text = dingtalk.TextContent{

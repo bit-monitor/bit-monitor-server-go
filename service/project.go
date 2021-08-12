@@ -21,7 +21,7 @@ func AddProject(r validation.AddProject) (err error, data interface{}) {
 	// 保存关联关系
 	err, userList = GetUserListByUserIdList(r.UserList)
 	if err != nil {
-		global.WM_LOG.Error("查询用户列表失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询用户列表", zap.Any("err", err))
 		return err, nil
 	}
 

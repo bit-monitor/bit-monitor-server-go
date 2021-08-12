@@ -23,7 +23,7 @@ func Gorm() *gorm.DB {
 func GormMysql() *gorm.DB {
 	m := global.WM_CONFIG.Mysql
 	if m.Dbname == "" {
-		global.WM_LOG.Error("MySQL数据库配置有问题")
+		global.WM_LOG.Error("[失败]MySQL数据库配置有问题")
 		os.Exit(0)
 		return nil
 	}
@@ -37,7 +37,7 @@ func GormMysql() *gorm.DB {
 		SkipInitializeWithVersion: false, // 根据版本自动配置
 	}
 	if db, err := gorm.Open(mysql.New(mysqlConfig), gormConfig(m.LogMode)); err != nil {
-		global.WM_LOG.Error("MySQL启动异常", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]MySQL启动异常", zap.Any("err", err))
 		os.Exit(0)
 		return nil
 	} else {
@@ -79,12 +79,12 @@ func AutoMigrateMysqlTables(db *gorm.DB) {
 	// 自定义连接表(也就是gorm里所谓的"JoinTable"，实际上就是associative table或junction table)
 	err = db.SetupJoinTable(&model.UmsUser{}, "PmsProjects", &model.UmsUserProjectRelation{})
 	if err != nil {
-		global.WM_LOG.Error("自定义连接表失败:UmsUserProjectRelation", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]自定义连接表:UmsUserProjectRelation", zap.Any("err", err))
 		os.Exit(0)
 	}
 	err = db.SetupJoinTable(&model.PmsProject{}, "UmsUsers", &model.UmsUserProjectRelation{})
 	if err != nil {
-		global.WM_LOG.Error("自定义连接表失败:UmsUserProjectRelation", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]自定义连接表:UmsUserProjectRelation", zap.Any("err", err))
 		os.Exit(0)
 	}
 
@@ -107,8 +107,8 @@ func AutoMigrateMysqlTables(db *gorm.DB) {
 		&model.UmsUserRegisterRecord{},
 	)
 	if err != nil {
-		global.WM_LOG.Error("自动迁移数据库表结构失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]自动迁移数据库表结构", zap.Any("err", err))
 		os.Exit(0)
 	}
-	global.WM_LOG.Info("自动迁移数据库表结构成功")
+	global.WM_LOG.Info("[成功]自动迁移数据库表结构")
 }

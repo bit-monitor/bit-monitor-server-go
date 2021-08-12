@@ -22,7 +22,7 @@ func AddSubscriber(tx *gorm.DB, s validation.Subscriber, alarmId uint64) (err er
 	}
 	err = db.Create(&entity).Error
 	if err != nil {
-		global.WM_LOG.Error("保存预警订阅通知记录失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]保存预警订阅通知记录", zap.Any("err", err))
 	}
 	return err
 }
@@ -40,7 +40,7 @@ func GetAllSubscriberByAlarmId(alarmId uint64) []*model.AmsSubscriber {
 	var records []*model.AmsSubscriber
 	db.Where("`alarm_id` = ?", alarmId).Find(&records)
 	if records == nil {
-		global.WM_LOG.Error("根据alarmId获取所有关联的subscriber失败", zap.Any("err", "找不到记录"))
+		global.WM_LOG.Error("[失败]根据alarmId获取所有关联的subscriber", zap.Any("err", "找不到记录"))
 	}
 	return records
 }

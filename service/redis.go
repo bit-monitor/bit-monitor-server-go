@@ -27,7 +27,7 @@ func HGet(key string, field string) (err error, value string) {
 
 func HSet(key string, field string, value interface{}, expiration time.Duration) bool {
 	if _, err := global.WM_REDIS.Client.HSet(*global.WM_REDIS.Context, key, field, value).Result(); err != nil {
-		global.WM_LOG.Error("HSet错误", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]HSet错误", zap.Any("err", err))
 		return false
 	} else {
 		// 设置过期时间

@@ -14,15 +14,15 @@ func AddJsErrorLog(c *gin.Context) {
 	var r validation.AddJsErrorLog
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("新增js异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.AddJsErrorLog(r); err != nil {
-		global.WM_LOG.Error("新增js异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]增js异常日志", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("新增js异常日志成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]新增js异常日志", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

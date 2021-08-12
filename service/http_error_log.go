@@ -40,7 +40,7 @@ func AddHttpErrorLog(r validation.AddHttpErrorLog) (err error, data interface{})
 	}
 	err = db.Create(&log).Error
 	if err != nil {
-		global.WM_LOG.Error("保存http异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]保存http异常日志", zap.Any("err", err))
 		return err, false
 	}
 	return nil, true

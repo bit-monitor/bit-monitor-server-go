@@ -19,10 +19,10 @@ func Redis() {
 	})
 	pong, err := client.Ping(ctx).Result()
 	if err != nil {
-		global.WM_LOG.Error("redis连接失败, err:", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]redis连接, err:", zap.Any("err", err))
 		os.Exit(0)
 	} else {
-		global.WM_LOG.Info("redis连接成功:", zap.String("pong", pong))
+		global.WM_LOG.Info("[成功]redis连接:", zap.String("pong", pong))
 		global.WM_REDIS = &global.Redis{
 			Client:  client,
 			Context: &ctx,

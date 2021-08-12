@@ -37,7 +37,7 @@ func AddCustomErrorLog(r validation.AddCustomErrorLog) (err error, data interfac
 	}
 	err = db.Create(&log).Error
 	if err != nil {
-		global.WM_LOG.Error("保存custom异常日志失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]保存custom异常日志", zap.Any("err", err))
 		return err, false
 	}
 	return nil, true

@@ -40,7 +40,7 @@ func (s Scheduler) Start(f func(s string) error) error {
 	// 开始定时任务后，存入任务队列中
 	c.Start()
 	scheduleTasks[s.SchedulerId] = c
-	global.WM_LOG.Info("定时任务已存入任务队列", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v", s.BeanName, s.MethodName, s.Params)))
+	global.WM_LOG.Info("[信息]定时任务已存入任务队列", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v", s.BeanName, s.MethodName, s.Params)))
 
 	return err
 }

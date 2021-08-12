@@ -14,15 +14,15 @@ func GetSubscriberNotifyRecord(c *gin.Context) {
 	var r validation.GetSubscriberNotifyRecord
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("查询报警记录失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询报警记录", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.GetSubscriberNotifyRecord(r); err != nil {
-		global.WM_LOG.Error("查询报警记录失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询报警记录", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("查询报警记录成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]查询报警记录", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -32,15 +32,15 @@ func GetWithRelatedInfoSubscriberNotifyRecord(c *gin.Context) {
 	var r validation.GetWithRelatedInfoSubscriberNotifyRecord
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("查询报警记录-带关联信息失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询报警记录-带关联信息", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.GetWithRelatedInfoSubscriberNotifyRecord(r); err != nil {
-		global.WM_LOG.Error("查询报警记录-带关联信息失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询报警记录-带关联信息", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("查询报警记录-带关联信息成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]查询报警记录-带关联信息", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }

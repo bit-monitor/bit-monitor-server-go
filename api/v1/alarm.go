@@ -17,7 +17,7 @@ func AddAlarm(c *gin.Context) {
 	var r validation.AddAlarm
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
@@ -27,29 +27,29 @@ func AddAlarm(c *gin.Context) {
 	subscriberListParam := c.PostForm("subscriberList")
 	if subscriberListParam == "" {
 		err = errors.New("subscriberList不能为空")
-		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	var subscriberList []validation.Subscriber
 	err = json.Unmarshal([]byte(subscriberListParam), &subscriberList)
 	if err != nil {
-		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 
 	err, userId := service.GetUserIdByContext(c)
 	if err != nil {
-		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.AddAlarm(r, userId); err != nil {
-		global.WM_LOG.Error("新增预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]新增预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("新增预警成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]新增预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -59,7 +59,7 @@ func UpdateAlarm(c *gin.Context) {
 	var r validation.UpdateAlarm
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]编辑预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
@@ -71,7 +71,7 @@ func UpdateAlarm(c *gin.Context) {
 		var subscriberList []validation.Subscriber
 		err = json.Unmarshal([]byte(subscriberListParam), &subscriberList)
 		if err != nil {
-			global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
+			global.WM_LOG.Error("[失败]编辑预警", zap.Any("err", err))
 			response.FailWithError(err, c)
 			return
 		}
@@ -79,10 +79,10 @@ func UpdateAlarm(c *gin.Context) {
 	}
 
 	if err, data := service.UpdateAlarm(r); err != nil {
-		global.WM_LOG.Error("编辑预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]编辑预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("编辑预警成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]编辑预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -92,15 +92,15 @@ func GetAlarm(c *gin.Context) {
 	var r validation.GetAlarm
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("查询预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.GetAlarm(r); err != nil {
-		global.WM_LOG.Error("查询预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("查询预警成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]查询预警", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
@@ -109,19 +109,19 @@ func DeleteAlarm(c *gin.Context) {
 	var err error
 	id := c.Param("id")
 	if id == "" {
-		global.WM_LOG.Error("删除预警失败，id不能为空", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]删除预警，id不能为空", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	alarmId, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
-		global.WM_LOG.Error("删除预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]删除预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	err, data := service.DeleteAlarm(alarmId)
 	if err != nil {
-		global.WM_LOG.Error("删除预警失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]删除预警", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
 		response.SuccessWithData(data, c)
@@ -133,15 +133,15 @@ func GetAlarmRecord(c *gin.Context) {
 	var r validation.GetAlarmRecord
 	err = c.ShouldBind(&r)
 	if err != nil {
-		global.WM_LOG.Error("查询预警记录失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询预警记录", zap.Any("err", err))
 		response.FailWithError(err, c)
 		return
 	}
 	if err, data := service.GetAlarmRecord(r); err != nil {
-		global.WM_LOG.Error("查询预警记录失败", zap.Any("err", err))
+		global.WM_LOG.Error("[失败]查询预警记录", zap.Any("err", err))
 		response.FailWithError(err, c)
 	} else {
-		global.WM_LOG.Info("查询预警记录成功", zap.Any("data", data))
+		global.WM_LOG.Info("[成功]查询预警记录", zap.Any("data", data))
 		response.SuccessWithData(data, c)
 	}
 }
