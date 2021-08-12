@@ -26,6 +26,9 @@ func main() {
 	// 初始化redis服务
 	initialize.Redis()
 
+	// 程序启动时，自动启动所有激活状态的定时任务
+	go initialize.RunScheduler()
+
 	// 运行http服务
 	core.RunWindowsServer()
 }

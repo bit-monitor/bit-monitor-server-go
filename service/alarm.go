@@ -409,63 +409,21 @@ func startAlarmScheduler(tx *gorm.DB, entity *model.AmsAlarm) error {
 	}
 
 	// 保存定时任务
-	err, schedulerEntity := AddScheduler(tx, params)
+	err, scheduler := AddScheduler(tx, params)
 	if err != nil {
 		return err
 	}
 
 	// 保存预警-定时任务关联表
 	alarmId := entity.Id
-	schedulerId := schedulerEntity.Id
+	schedulerId := scheduler.Id
 	err = AddAlarmSchedulerRelation(tx, alarmId, schedulerId)
 	if err != nil {
 		return err
 	}
 
 	// 创建定时任务并启动
-	s := utils.Scheduler{
-		BeanName:       schedulerEntity.BeanName,
-		MethodName:     schedulerEntity.MethodName,
-		Params:         schedulerEntity.Params,
-		SchedulerId:    schedulerEntity.Id,
-		CronExpression: schedulerEntity.CronExpression,
-	}
-	err = s.Start(func(params string) error {
-		var errTemp error
-		state := 0
-		errorMsg := ""
-		timeBefore := time.Now()
-
-		global.WM_LOG.Info("定时任务开始执行", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v", s.BeanName, s.MethodName, s.Params)))
-
-		// 要执行的任务
-		errTemp = startAlarmSchedule(params)
-
-		if errTemp != nil {
-			errorMsg = errTemp.Error()
-			global.WM_LOG.Info("定时任务执行异常", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v，异常：%v", s.BeanName, s.MethodName, s.Params, errTemp)))
-		} else {
-			state = 1
-		}
-		timeAfter := time.Now()
-		timeCost := timeAfter.Sub(timeBefore).Milliseconds()
-		global.WM_LOG.Info("定时任务执行结束", zap.Any("info", fmt.Sprintf("bean：%v，方法：%v，参数：%v，耗时：%v毫秒", s.BeanName, s.MethodName, s.Params, timeCost)))
-
-		// 保存定时任务执行记录
-		// 这里由于cron库的定时任务是通过goroutine启动的异步函数，因此下面保存无法用tx的方式，要么只能使用gorm的手动控制事务的方式
-		// gorm手动事务的文档地址：https://gorm.io/docs/transactions.html
-		db := global.WM_DB.Model(&model.TmsSchedulerRecord{})
-		record := model.TmsSchedulerRecord{
-			SchedulerId: s.SchedulerId,
-			State:       int8(state),
-			CreateTime:  time.Now(),
-			TimeCost:    int8(timeCost),
-			ErrorMsg:    errorMsg,
-		}
-		errTemp = db.Save(&record).Error
-
-		return errTemp
-	})
+	err = StartScheduler(scheduler)
 
 	return err
 }
