@@ -54,3 +54,11 @@ type AlarmScheduleResult struct {
 	StartTime              time.Time `json:"StartTime"`
 	EndTime                time.Time `json:"endTime"`
 }
+
+type GetAlarmRecord struct {
+	PageInfo
+	AlarmId   *uint64 `form:"alarmId" json:"alarmId" binding:"omitempty"`
+	AlarmData string  `form:"alarmData" json:"alarmData" binding:"omitempty"`
+	StartTime string  `form:"startTime" json:"startTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+	EndTime   string  `form:"endTime" json:"endTime" binding:"omitempty,datetime=2006-01-02 15:04:05"`
+}

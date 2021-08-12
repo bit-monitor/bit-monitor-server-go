@@ -127,3 +127,21 @@ func DeleteAlarm(c *gin.Context) {
 		response.SuccessWithData(data, c)
 	}
 }
+
+func GetAlarmRecord(c *gin.Context) {
+	var err error
+	var r validation.GetAlarmRecord
+	err = c.ShouldBind(&r)
+	if err != nil {
+		global.WM_LOG.Error("查询预警记录失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+		return
+	}
+	if err, data := service.GetAlarmRecord(r); err != nil {
+		global.WM_LOG.Error("查询预警记录失败", zap.Any("err", err))
+		response.FailWithError(err, c)
+	} else {
+		global.WM_LOG.Info("查询预警记录成功", zap.Any("data", data))
+		response.SuccessWithData(data, c)
+	}
+}

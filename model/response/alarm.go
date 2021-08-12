@@ -1,5 +1,7 @@
 package response
 
+import "time"
+
 type GetAlarm struct {
 	Id                uint64 `json:"id"`
 	Name              string `json:"name"`
@@ -14,4 +16,12 @@ type GetAlarm struct {
 	CreateBy          uint64 `json:"createBy"`
 	IsDeleted         int8   `json:"isDeleted"`
 	SubscriberList    string `json:"subscriberList"`
+}
+
+type GetAlarmRecord struct {
+	Id         uint64    `json:"id"`
+	AlarmId    uint64    `json:"alarmId"`
+	AlarmData  string    `json:"alarmData"`
+	CreateTime time.Time `json:"createTime"`
+	AlarmName  string    `json:"alarmName"`
 }

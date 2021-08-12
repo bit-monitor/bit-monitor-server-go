@@ -297,6 +297,63 @@ func DeleteAlarm(alarmId uint64) (err error, data interface{}) {
 	return nil, true
 }
 
+func GetAlarmRecord(r validation.GetAlarmRecord) (err error, data interface{}) {
+	limit := r.PageSize
+	offset := limit * (r.PageNum - 1)
+	db := global.WM_DB.Model(&model.AmsAlarmRecord{})
+	var totalNum int64
+	var alarmRecordList []model.AmsAlarmRecord
+	records := make([]response.GetAlarmRecord, 0)
+
+	// 预警id
+	if r.AlarmId != nil {
+		db = db.Where("`alarm_id` = ?", r.AlarmId)
+	}
+	// 报警内容，格式为JSON字符串
+	if r.AlarmData != "" {
+		db = db.Where("`alarm_data` like ?", "%"+r.AlarmData+"%")
+	}
+	// 开始时间、结束时间
+	if r.StartTime != "" && r.EndTime != "" {
+		db = db.Where("`create_time` BETWEEN ? AND ?", r.StartTime, r.EndTime)
+	} else if r.StartTime != "" {
+		db = db.Where("`create_time` >= ?", r.StartTime)
+	} else if r.EndTime != "" {
+		db = db.Where("`create_time` <= ?", r.EndTime)
+	}
+
+	err = db.Count(&totalNum).Error
+	err = db.Limit(limit).Offset(offset).Find(&alarmRecordList).Error
+	if err != nil {
+		return
+	}
+
+	// 设置alarmName
+	for _, alarmRecord := range alarmRecordList {
+		err, alarmName := getAlarmNameByAlarmId(alarmRecord.AlarmId)
+		if err != nil {
+			break
+		}
+		record := response.GetAlarmRecord{
+			Id:         alarmRecord.Id,
+			AlarmId:    alarmRecord.AlarmId,
+			AlarmData:  alarmRecord.AlarmData,
+			AlarmName:  alarmName,
+			CreateTime: alarmRecord.CreateTime,
+		}
+		records = append(records, record)
+	}
+
+	data = map[string]interface{}{
+		"totalNum":  totalNum,
+		"totalPage": math.Ceil(float64(totalNum) / float64(r.PageSize)),
+		"pageNum":   r.PageNum,
+		"pageSize":  r.PageSize,
+		"records":   records,
+	}
+	return err, data
+}
+
 // 设置subscriberList
 func setSubscriberList(a *response.GetAlarm) error {
 	var err error
@@ -305,6 +362,19 @@ func setSubscriberList(a *response.GetAlarm) error {
 	subscriberList, err := json.Marshal(subscriberEntityList)
 	a.SubscriberList = string(subscriberList)
 	return err
+}
+
+// 根据预警id获取预警名称
+func getAlarmNameByAlarmId(alarmId uint64) (err error, alarmName string) {
+	var alarm model.AmsAlarm
+	db := global.WM_DB.Model(&model.AmsAlarm{})
+	err = db.Where("`id` = ?", alarmId).First(&alarm).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = errors.New("预警不存在")
+		return err, ""
+	}
+	alarmName = alarm.Name
+	return nil, alarmName
 }
 
 // 启动预警定时任务
