@@ -119,7 +119,7 @@ func GetWithRelatedInfoSubscriberNotifyRecord(r validation.GetWithRelatedInfoSub
 	}
 
 	err = db.Count(&totalNum).Error
-	err = db.Limit(limit).Offset(offset).Find(&entityList).Error
+	err = db.Limit(limit).Offset(offset).Order("create_time desc").Find(&entityList).Error
 	if err != nil {
 		return
 	}
