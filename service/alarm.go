@@ -327,7 +327,7 @@ func GetAlarmRecord(r validation.GetAlarmRecord) (err error, data interface{}) {
 	}
 
 	err = db.Count(&totalNum).Error
-	err = db.Limit(limit).Offset(offset).Find(&alarmRecordList).Error
+	err = db.Limit(limit).Offset(offset).Order("create_time desc").Find(&alarmRecordList).Error
 	if err != nil {
 		return
 	}
